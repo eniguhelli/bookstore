@@ -35,3 +35,11 @@ exports.updateOrderStatus = async (req, res) => {
   if (!order) return res.status(404).json({ message: 'Order not found' });
   res.json(order);
 };
+
+// DELETE order (Admin)
+exports.deleteOrder = async (req, res) => {
+  const { id } = req.params;
+  const order = await Order.findByIdAndDelete(id);
+  if (!order) return res.status(404).json({ message: 'Order not found' });
+  res.json(order);
+}

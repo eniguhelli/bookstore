@@ -3,6 +3,9 @@ const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 require('express-async-errors');
+const { swaggerUi, swaggerSpec } = require("./config/swagger");
+const swaggerPath = '/api-docs';
+
 
 const { connectDB } = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
@@ -27,9 +30,13 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/orders', orderRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Global error handler
 app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => {
+  console.log(`🚀 Server running at http://localhost:${port} ✅`);
+  console.log(`📚 Swagger docs available at http://localhost:${port}${swaggerPath}`);
+});
