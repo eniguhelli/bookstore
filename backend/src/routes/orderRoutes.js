@@ -3,6 +3,7 @@ const router = express.Router();
 const orderController = require('../controllers/orderController');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const { validateBody, createOrderSchema, updateOrderStatusSchema } = require('../middlewares/validationMiddleware');
 
 // User
 /**
@@ -65,7 +66,7 @@ const role = require('../middlewares/roleMiddleware');
  *       403:
  *         description: Forbidden - user role not allowed
  */
-router.post('/', auth, role(['user','admin']), orderController.createOrder);
+router.post('/', auth, role(['user','admin']),validateBody(createOrderSchema), orderController.createOrder);
 
 /**
  * @swagger
@@ -161,7 +162,7 @@ router.get('/', auth, role(['admin']), orderController.getAllOrders);
  *       404:
  *         description: Order not found
  */
-router.put('/:id/status', auth, role(['admin']), orderController.updateOrderStatus);
+router.put('/:id/status', auth, role(['admin']),validateBody(updateOrderStatusSchema), orderController.updateOrderStatus);
 
 /**
  * @swagger

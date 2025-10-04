@@ -1,6 +1,18 @@
-const { registerSchema, loginSchema } = require('../controllers/authController'); // import the validation schemas
+const { registerSchema, loginSchema } = require('../validations/authValidation');
+const { createBookSchema, updateBookSchema } = require('../validations/bookValidation');
+const {createCategorySchema, updateCategorySchema} = require('../validations/categoryValidation');
+const { createOrderSchema, updateOrderSchema } = require('../validations/orderValidation');
 
-// Middleware to validate registration data
+function validateBody(schema) {
+  return (req, res, next) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ message: error.details[0].message });
+    }
+    next();
+  };
+}
+
 function validateRegister(req, res, next) {
   const { error } = registerSchema.validate(req.body);
   if (error) {
@@ -9,7 +21,6 @@ function validateRegister(req, res, next) {
   next();
 }
 
-// Middleware to validate login data
 function validateLogin(req, res, next) {
   const { error } = loginSchema.validate(req.body);
   if (error) {
@@ -18,4 +29,14 @@ function validateLogin(req, res, next) {
   next();
 }
 
-module.exports = { validateRegister, validateLogin };
+module.exports = {
+  validateRegister,
+  validateLogin,
+  validateBody,
+  createBookSchema,
+  updateBookSchema,
+  createCategorySchema,
+  updateCategorySchema,
+  createOrderSchema,
+  updateOrderSchema
+};

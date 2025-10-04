@@ -3,6 +3,7 @@ const router = express.Router();
 const bookController = require('../controllers/bookController');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const { validateBody, createBookSchema, updateBookSchema } = require('../middlewares/validationMiddleware');
 
 
 /**
@@ -121,7 +122,7 @@ router.get('/:id', bookController.getBookById);
  *       401:
  *         description: Nuk jeni i autorizuar
  */
-router.post('/', auth, role(['admin']), bookController.createBook);
+router.post('/', auth, role(['admin']),validateBody(createBookSchema), bookController.createBook);
 
 /**
  * @swagger
@@ -175,7 +176,7 @@ router.post('/', auth, role(['admin']), bookController.createBook);
  *       401:
  *         description: Nuk jeni i autorizuar
  */
-router.put('/:id', auth, role(['admin']), bookController.updateBook);
+router.put('/:id', auth, role(['admin']), validateBody(updateBookSchema), bookController.updateBook);
 
 /**
  * @swagger

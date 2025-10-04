@@ -3,6 +3,7 @@ const router = express.Router();
 const categoryController = require('../controllers/categoryController');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const { validateBody, createCategorySchema, updateCategorySchema } = require('../middlewares/validationMiddleware');
 
 // Public: get all categories
 
@@ -60,7 +61,7 @@ router.get('/', categoryController.getCategories);
  *       403:
  *         description: Forbidden - admin role required
  */
-router.post('/', auth, role(['admin']), categoryController.createCategory);
+router.post('/', auth, role(['admin']),validateBody(createCategorySchema), categoryController.createCategory);
 
 /**
  * @swagger
@@ -103,7 +104,7 @@ router.post('/', auth, role(['admin']), categoryController.createCategory);
  *       404:
  *         description: Category not found
  */
-router.put('/:id', auth, role(['admin']), categoryController.updateCategory);
+router.put('/:id', auth, role(['admin']),validateBody(updateCategorySchema), categoryController.updateCategory);
 
 /**
  * @swagger
