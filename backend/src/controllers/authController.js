@@ -1,8 +1,27 @@
 const User = require('../models/User');
 const { createAccessToken, createRefreshToken } = require('../utils/jwt');
+const Joi = require('joi');
+
+// Joi validation schemas for registration and login
+const registerSchema = Joi.object({
+  name: Joi.string().min(3).max(50).required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
+
+const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(6).required(),
+});
 
 // Register user
 exports.register = async (req, res) => {
+
+  const { error } = registerSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
   const { name, email, password } = req.body;
   const user = await User.create({ name, email, password });
   const accessToken = createAccessToken(user);
@@ -21,6 +40,12 @@ exports.register = async (req, res) => {
 
 // Login user
 exports.login = async (req, res) => {
+
+  const { error } = loginSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
+  
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user || !(await user.comparePassword(password))) {

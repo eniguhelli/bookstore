@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const { validateRegister, validateLogin } = require('../middlewares/validationMiddleware');
 
 /**
  * @swagger
@@ -34,7 +35,7 @@ const authController = require('../controllers/authController');
  *       400:
  *         description: Input i pavlefshëm
  */
-router.post('/register', authController.register);
+router.post('/register',validateRegister, authController.register);
 
 /**
  * @swagger
@@ -64,7 +65,7 @@ router.post('/register', authController.register);
  *       401:
  *         description: Kredenciale të pavlefshme
  */
-router.post('/login', authController.login);
+router.post('/login',validateLogin, authController.login);
 
 /**
  * @swagger
