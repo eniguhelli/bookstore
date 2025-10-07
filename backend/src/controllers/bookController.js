@@ -18,9 +18,13 @@ exports.getBooks = async (req, res) => {
 
 // GET single book
 exports.getBookById = async (req, res) => {
-  const book = await Book.findById(req.params.id).populate('category');
-  if (!book) return res.status(404).json({ message: 'Book not found' });
-  res.json(book);
+  try {
+    const book = await Book.findById(req.params.id).populate('category');
+    if (!book) return res.status(404).json({ message: 'Book not found' });
+    res.json(book);
+  } catch (err) {
+    res.status(400).json({ message: 'Invalid book ID' });
+  }
 };
 
 // CREATE book (Admin)

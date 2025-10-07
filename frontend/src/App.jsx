@@ -9,6 +9,9 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Cart from "./pages/Cart"
 import Orders from "./pages/Orders"
+import ProtectedRoute from "./components/ProtectedRoute"
+import AdminDashboard from "./pages/AdminDashboard"
+
 
 function App() {
   return (
@@ -25,6 +28,20 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/admin"
+                element={
+                  <ProtectedRoute role="admin">
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/dashboard" element={
+                  <ProtectedRoute role ="user">
+                  <userDashboard />
+                  </ProtectedRoute>
+                }
+              />
+                    
             </Routes>
           </div>
         </BrowserRouter>

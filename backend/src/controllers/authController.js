@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
 
-  res.json({ accessToken });
+  res.json({ accessToke, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
 };
 
 // Login user
@@ -51,7 +51,7 @@ exports.login = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
 
-  res.json({ accessToken });
+  res.json({ accessToken, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
 };
 
 // Refresh token

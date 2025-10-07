@@ -13,10 +13,13 @@ export default function BookDetail() {
   const { addToCart } = useCart()
 
   useEffect(() => {
-    loadBook()
+    if (id) {
+      loadBook()
+    }
   }, [id])
 
   const loadBook = async () => {
+    if (!id) return
     try {
       const response = await getBook(id)
       setBook(response.data)

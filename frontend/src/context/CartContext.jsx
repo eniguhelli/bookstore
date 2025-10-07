@@ -20,9 +20,9 @@ export function CartProvider({ children }) {
 
   const addToCart = (book) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === book.id)
+      const existing = prev.find((item) => item.id === book._id)
       if (existing) {
-        return prev.map((item) => (item.id === book.id ? { ...item, quantity: item.quantity + 1 } : item))
+        return prev.map((item) => (item.id === book._id ? { ...item, quantity: item.quantity + 1 } : item))
       }
       return [...prev, { ...book, quantity: 1 }]
     })
