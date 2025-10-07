@@ -33,10 +33,17 @@ export default function Navbar() {
 
             {user ? (
               <>
-                <Link to="/orders" className="text-gray-700 hover:text-blue-600">
-                  Orders
-                </Link>
-                <span className="text-gray-700">Hi, {user.name}</span>
+                {user.role === "admin" ? (
+                  <Link to="/admin" className="text-gray-700 hover:text-blue-600">
+                    Admin Panel
+                  </Link>
+                ) : (
+                  <Link to="/dashboard" className="text-gray-700 hover:text-blue-600">
+                    My Dashboard
+                  </Link>
+                )}
+
+                <span className="text-gray-700">Hello, {user.name}</span>
                 <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
                   Logout
                 </button>
