@@ -3,6 +3,7 @@ const router = express.Router();
 const orderController = require('../controllers/orderController');
 const auth = require('../middlewares/authMiddleware');
 const role = require('../middlewares/roleMiddleware');
+const Order = require('../models/Order');
 const { validateBody, createOrderSchema, updateOrderStatusSchema } = require('../middlewares/validationMiddleware');
 
 // User
@@ -66,7 +67,7 @@ const { validateBody, createOrderSchema, updateOrderStatusSchema } = require('..
  *       403:
  *         description: Forbidden - user role not allowed
  */
-router.post('/', auth, role(['user','admin']),validateBody(createOrderSchema), orderController.createOrder);
+router.post('/', auth, role(['user', 'admin']), validateBody(createOrderSchema), orderController.createOrder);
 
 /**
  * @swagger
@@ -90,7 +91,7 @@ router.post('/', auth, role(['user','admin']),validateBody(createOrderSchema), o
  *       403:
  *         description: Forbidden - user role not allowed
  */
-router.get('/my', auth, role(['user','admin']), orderController.getMyOrders);
+router.get('/my', auth, role(['user', 'admin']), orderController.getMyOrders);
 
 // Admin only
 
@@ -116,7 +117,16 @@ router.get('/my', auth, role(['user','admin']), orderController.getMyOrders);
  *       403:
  *         description: Forbidden - admin role required
  */
-router.get('/', auth, role(['admin']), orderController.getAllOrders);
+router.get('/', auth, role(['admin']), async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate('user', 'name email')
+      .populate('items.book', 'title author price');
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching orders' });
+  }
+});
 
 /**
  * @swagger
@@ -162,7 +172,7 @@ router.get('/', auth, role(['admin']), orderController.getAllOrders);
  *       404:
  *         description: Order not found
  */
-router.put('/:id/status', auth, role(['admin']),validateBody(updateOrderStatusSchema), orderController.updateOrderStatus);
+router.put('/:id/status', auth, role(['admin']), validateBody(updateOrderStatusSchema), orderController.updateOrderStatus);
 
 /**
  * @swagger

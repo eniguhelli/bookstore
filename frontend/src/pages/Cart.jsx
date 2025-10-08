@@ -57,9 +57,9 @@ export default function Cart() {
         {cart.map((item) => (
           <div key={item.id} className="flex items-center gap-4 py-4 border-b">
             <img
-              src={item.image || "/placeholder.svg?height=100&width=80"}
+              src={item.coverImage || "/placeholder.svg?height=100&width=80"}
               alt={item.title}
-              className="w-20 h-28 object-cover rounded"
+              className="w-20 h-28 object-contain rounded bg-gray-100"
             />
             <div className="flex-1">
               <h3 className="font-bold">{item.title}</h3>

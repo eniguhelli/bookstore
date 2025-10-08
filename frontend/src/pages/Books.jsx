@@ -20,7 +20,7 @@ export default function Books() {
   const loadData = async () => {
     try {
       const [booksRes, categoriesRes] = await Promise.all([
-        getBooks({ q: search, category: selectedCategory }),
+        getBooks({ search, category: selectedCategory }),
         getCategories(),
       ])
       setBooks(booksRes.data)
@@ -55,7 +55,7 @@ export default function Books() {
         >
           <option value="">All Categories</option>
           {categories.map((cat) => (
-            <option key={cat._id} value={cat._id}>
+            <option key={cat.id} value={cat.id}>
               {cat.name}
             </option>
           ))}
@@ -64,19 +64,21 @@ export default function Books() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {books.map((book) => (
-          <div key={book._id} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <img
-              src={book.image || "/placeholder.svg?height=300&width=200"}
-              alt={book.title}
-              className="w-full h-64 object-cover"
-            />
+          <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div className="w-full h-80 bg-gray-100 flex items-center justify-center">
+              <img
+                src={book.coverImage || "/placeholder.svg?height=300&width=200"}
+                alt={book.title}
+                className="w-full h-full object-contain p-2"
+              />
+            </div>
             <div className="p-4">
               <h3 className="font-bold text-lg mb-2">{book.title}</h3>
               <p className="text-gray-600 text-sm mb-2">{book.author}</p>
               <p className="text-blue-600 font-bold mb-4">${book.price}</p>
               <div className="flex gap-2">
                 <Link
-                  to={`/books/${book._id}`}
+                  to={`/books/${book.id}`}
                   className="flex-1 text-center bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
                 >
                   View

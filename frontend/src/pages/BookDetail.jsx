@@ -13,13 +13,10 @@ export default function BookDetail() {
   const { addToCart } = useCart()
 
   useEffect(() => {
-    if (id) {
-      loadBook()
-    }
+    loadBook()
   }, [id])
 
   const loadBook = async () => {
-    if (!id) return
     try {
       const response = await getBook(id)
       setBook(response.data)
@@ -45,11 +42,13 @@ export default function BookDetail() {
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <img
-          src={book.image || "/placeholder.svg?height=600&width=400"}
-          alt={book.title}
-          className="w-full rounded-lg shadow-lg"
-        />
+        <div className="w-full max-w-md mx-auto bg-gray-100 rounded-lg p-4">
+          <img
+            src={book.coverImage || "/placeholder.svg?height=600&width=400"}
+            alt={book.title}
+            className="w-full h-auto object-contain rounded-lg shadow-lg"
+          />
+        </div>
 
         <div>
           <h1 className="text-4xl font-bold mb-4">{book.title}</h1>
