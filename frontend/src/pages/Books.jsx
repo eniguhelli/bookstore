@@ -64,7 +64,7 @@ export default function Books() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {books.map((book) => (
-          <div key={book.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div key={book._id} className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="w-full h-80 bg-gray-100 flex items-center justify-center">
               <img
                 src={book.coverImage || "/placeholder.svg?height=300&width=200"}
@@ -78,7 +78,7 @@ export default function Books() {
               <p className="text-blue-600 font-bold mb-4">${book.price}</p>
               <div className="flex gap-2">
                 <Link
-                  to={`/books/${book.id}`}
+                  to={`/books/${book._id}`}
                   className="flex-1 text-center bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
                 >
                   View
