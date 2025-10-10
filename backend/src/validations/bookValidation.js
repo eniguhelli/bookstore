@@ -37,7 +37,8 @@ const updateBookSchema = Joi.object({
   description: Joi.string().min(5).max(2000),
   price: Joi.number().min(0),
   stock: Joi.number().integer().min(0),
-  category: objectId,
+  category: objectId.optional(),
+  coverImage: Joi.string().uri(),
 }).min(1);
 
 module.exports = {

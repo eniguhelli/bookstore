@@ -37,10 +37,10 @@ exports.createBook = async (req, res) => {
 // UPDATE book (Admin)
 exports.updateBook = async (req, res) => {
   const { id } = req.params;
-  const { title, author, description, price, stock, category } = req.body;
+  const { title, author, description, price, stock, category,coverImage } = req.body;
   const book = await Book.findByIdAndUpdate(
     id,
-    { title, author, description, price, stock, category },
+    { title, author, description, price, stock, category,coverImage },
     { new: true }
   );
   if (!book) return res.status(404).json({ message: 'Book not found' });
