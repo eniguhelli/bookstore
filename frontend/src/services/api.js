@@ -23,7 +23,6 @@ export const register = (userData) => api.post("/auth/register", userData)
 export const updateUser = (id, data) => api.put(`/users/${id}`, data)
 export const deleteUser = (id) => api.delete(`/users/${id}`)
 
-
 // Books
 export const getBooks = (params) => api.get("/books", { params })
 export const getBook = (id) => api.get(`/books/${id}`)

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { getBooks, getCategories } from "../services/api"
 import { useCart } from "../context/CartContext"
 
@@ -12,21 +12,44 @@ export default function Books() {
   const [selectedCategory, setSelectedCategory] = useState("")
   const [loading, setLoading] = useState(true)
   const { addToCart } = useCart()
+  const [searchParams] = useSearchParams()
 
   useEffect(() => {
-    loadData()
+    loadCategories()
+  }, [])
+
+  const loadCategories = async () => {
+    try {
+      const categoriesRes = await getCategories()
+      setCategories(categoriesRes.data)
+
+      // Check if there's a category parameter in the URL
+      const categoryParam = searchParams.get("category")
+      if (categoryParam) {
+        // Find the category ID that matches the name from URL
+        const matchingCategory = categoriesRes.data.find(
+          (cat) => cat.name.toLowerCase() === categoryParam.toLowerCase(),
+        )
+        if (matchingCategory) {
+          setSelectedCategory(matchingCategory._id)
+        }
+      }
+    } catch (error) {
+      console.error("Error loading categories:", error)
+    }
+  }
+
+  useEffect(() => {
+    loadBooks()
   }, [search, selectedCategory])
 
-  const loadData = async () => {
+  const loadBooks = async () => {
     try {
-      const [booksRes, categoriesRes] = await Promise.all([
-        getBooks({ search, category: selectedCategory }),
-        getCategories(),
-      ])
+      setLoading(true)
+      const booksRes = await getBooks({ search, category: selectedCategory })
       setBooks(booksRes.data)
-      setCategories(categoriesRes.data)
     } catch (error) {
-      console.error("Error loading data:", error)
+      console.error("Error loading books:", error)
     } finally {
       setLoading(false)
     }

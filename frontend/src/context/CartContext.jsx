@@ -24,7 +24,7 @@ export function CartProvider({ children }) {
       if (existing) {
         return prev.map((item) => (item.id === book._id ? { ...item, quantity: item.quantity + 1 } : item))
       }
-      return [...prev, { ...book, quantity: 1 }]
+      return [...prev, { ...book, id: book._id, quantity: 1 }]
     })
   }
 
