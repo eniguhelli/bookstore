@@ -4,7 +4,7 @@ const createOrderSchema = Joi.object({
   items: Joi.array()
     .items(
       Joi.object({
-        book: Joi.string().length(24).hex().required().messages({
+        bookId: Joi.string().length(24).hex().required().messages({
           'string.length': 'Book ID must be a valid 24-character hex string',
           'string.hex': 'Book ID must be a valid hex string',
           'any.required': 'Book ID is required',

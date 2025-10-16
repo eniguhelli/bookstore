@@ -17,23 +17,23 @@ export default function Cart() {
     }
 
     try {
-      const orderData = {
-        items: cart.map((item) => ({
-          bookId: item.id,
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        totalAmount: total,
-      }
+    const orderData = {
+      items: cart.map((item) => ({
+        bookId: item.id,      
+        quantity: item.quantity,
+        //price: item.price,
+      })),
+      totalPrice: total,     
+    };
 
-      await createOrder(orderData)
-      clearCart()
-      alert("Order placed successfully!")
-      navigate("/orders")
-    } catch (error) {
-      alert("Failed to place order")
-    }
+    await createOrder(orderData);
+    clearCart();
+    alert("Order placed successfully!");
+    navigate("/orders");
+  } catch (error) {
+    alert("Failed to place order");
   }
+};
 
   if (cart.length === 0) {
     return (
