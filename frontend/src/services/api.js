@@ -38,7 +38,7 @@ export const getCategories = () => api.get("/categories")
 export const createOrder = (orderData) => api.post("/orders", orderData)
 export const getOrders = () => api.get("/orders/my")
 
-export const getAllOrders = () => api.get("/orders/all")
+export const getAllOrders = () => api.get("/orders")
 export const updateOrderStatus = (id, status) => api.put(`/orders/${id}/status`, { status })
 
 export const getUsers = () => api.get("/users")

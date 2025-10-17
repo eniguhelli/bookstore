@@ -121,7 +121,7 @@ router.get('/', auth, role(['admin']), async (req, res) => {
   try {
     const orders = await Order.find()
       .populate('user', 'name email')
-      .populate('items.book', 'title author price');
+      .populate('items.bookId', 'title author price');
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching orders' });
