@@ -342,7 +342,7 @@ export default function AdminDashboard() {
                               onChange={(e) => handleUpdateOrderStatus(order._id, e.target.value)}
                               className="mt-2 text-sm border border-gray-300 rounded px-2 py-1"
                             >
-                              {["pending", "processing", "shipped", "delivered", "cancelled"].map((s) => (
+                              {["pending", "completed", "cancelled"].map((s) => (
                                 <option key={s} value={s}>
                                   {s.charAt(0).toUpperCase() + s.slice(1)}
                                 </option>

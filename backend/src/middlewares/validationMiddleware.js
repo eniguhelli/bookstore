@@ -1,7 +1,7 @@
 const { registerSchema, loginSchema } = require('../validations/authValidation');
 const { createBookSchema, updateBookSchema } = require('../validations/bookValidation');
 const {createCategorySchema, updateCategorySchema} = require('../validations/categoryValidation');
-const { createOrderSchema, updateOrderSchema } = require('../validations/orderValidation');
+const { createOrderSchema, updateOrderStatusSchema} = require('../validations/orderValidation');
 
 function validateBody(schema) {
   return (req, res, next) => {
@@ -38,5 +38,5 @@ module.exports = {
   createCategorySchema,
   updateCategorySchema,
   createOrderSchema,
-  updateOrderSchema
+  updateOrderStatusSchema
 };
