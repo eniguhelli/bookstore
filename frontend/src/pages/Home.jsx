@@ -209,24 +209,54 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-amber-700 to-orange-600 py-20">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-4xl font-serif font-bold text-white mb-4">Join Our Book Club</h2>
-          <p className="text-xl text-amber-50 mb-8">
-            Get exclusive deals, new releases, and reading recommendations delivered to your inbox
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-amber-300"
-            />
-            <button className="bg-gray-900 text-white px-8 py-4 rounded-full font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap">
-              Subscribe Now
-            </button>
-          </div>
-        </div>
-      </section>
+      <section className="bg-gradient-to-r from-blue-700 to-orange-700 py-20">
+  <div className="max-w-4xl mx-auto px-4 text-center text-white">
+    <h2 className="text-4xl font-serif font-bold mb-6">Contact Us</h2>
+    <p className="text-xl mb-12">
+      We'd love to hear from you! Please reach out for inquiries, feedback, or support.
+    </p>
+
+    {/* Contact Form */}
+    <form className="max-w-2xl mx-auto space-y-6">
+      <div>
+        <input
+          type="text"
+          placeholder="Your Name"
+          className="w-full px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-amber-300"
+          required
+        />
+      </div>
+      
+      <div>
+        <input
+          type="email"
+          placeholder="Your Email"
+          className="w-full px-6 py-4 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-amber-300"
+          required
+        />
+      </div>
+
+      <div>
+        <textarea
+          placeholder="Your Message"
+          className="w-full px-6 py-4 rounded-xl text-gray-900 focus:outline-none focus:ring-4 focus:ring-amber-300"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+
+      <div className="text-center mt-6">
+        <button
+          type="submit"
+          className="bg-amber-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-amber-700 transition-colors"
+        >
+          Send Message
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
     </div>
   )
 }
