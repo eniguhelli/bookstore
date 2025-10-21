@@ -46,17 +46,13 @@ export default function Books() {
   const loadBooks = async () => {
     try {
       setLoading(true)
-      const booksRes = await getBooks({ search, category: selectedCategory })
+      const booksRes = await getBooks({ q: search, category: selectedCategory })
       setBooks(booksRes.data)
     } catch (error) {
       console.error("Error loading books:", error)
     } finally {
       setLoading(false)
     }
-  }
-
-  if (loading) {
-    return <div className="text-center py-16">Loading...</div>
   }
 
   return (
