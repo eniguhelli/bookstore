@@ -14,6 +14,9 @@ import {
   updateUser,
   deleteUser,
   getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
 } from "../services/api"
 
 export default function AdminDashboard() {
@@ -48,6 +51,11 @@ export default function AdminDashboard() {
     role: "user",
   })
 
+  // Category modal states
+    const [showCategoryModal, setShowCategoryModal] = useState(false)
+    const [editingCategory, setEditingCategory] = useState(null)
+    const [categoryForm, setCategoryForm] = useState({ name: "" })
+
   useEffect(() => {
     if (!user || user.role !== "admin") {
       navigate("/")
@@ -62,6 +70,7 @@ export default function AdminDashboard() {
     if (activeTab === "books") fetchBooks()
     else if (activeTab === "orders") fetchOrders()
     else if (activeTab === "users") fetchUsers()
+    else if (activeTab === "categories") fetchCategories()
   }, [activeTab])
 
   // Fetch functions
@@ -207,6 +216,50 @@ export default function AdminDashboard() {
 
   if (!user || user.role !== "admin") return null
 
+  // Category handlers
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      if (editingCategory) await updateCategory(editingCategory._id, categoryForm)
+      else await createCategory(categoryForm)
+
+
+    setShowCategoryModal(false)
+    setEditingCategory(null)
+    setCategoryForm({ name: "" })
+    fetchCategories()
+    } catch (e) {
+    console.error(e)
+    alert("Error saving category")
+    }
+    setLoading(false)
+    }
+
+
+    const handleEditCategory = (cat) => {
+      setEditingCategory(cat)
+      setCategoryForm({ name: cat.name })
+      setShowCategoryModal(true)
+      }
+
+
+    const handleDeleteCategory = async (id) => {
+      if (!confirm("Are you sure you want to delete this category?")) return
+      setLoading(true)
+      try {
+        await deleteCategory(id)
+        fetchCategories()
+        } catch (e) {
+        console.error(e)
+        alert("Error deleting category")
+        }
+        setLoading(false)
+        }
+
+
+    if (!user || user.role !== "admin") return null
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4">
@@ -216,7 +269,7 @@ export default function AdminDashboard() {
         <div className="bg-white rounded-lg shadow mb-6">
           <div className="border-b border-gray-200">
             <nav className="flex -mb-px">
-              {["overview", "books", "orders", "users"].map((tab) => (
+              {["overview", "books", "orders", "users", "categories"].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -243,6 +296,10 @@ export default function AdminDashboard() {
                 <div className="bg-purple-50 p-6 rounded-lg">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Users</h3>
                   <p className="text-3xl font-bold text-purple-600">{users.length}</p>
+                </div>
+                <div className="bg-yellow-50 p-6 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Total Categories</h3>
+                  <p className="text-3xl font-bold text-yellow-600">{categories.length}</p>
                 </div>
               </div>
             )}
@@ -419,6 +476,57 @@ export default function AdminDashboard() {
                 )}
               </div>
             )}
+       
+            {/* Categories Tab */}
+            {activeTab === "categories" && (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900">Manage Categories</h2>
+                  <button
+                    onClick={() => {
+                      setEditingCategory(null)
+                      setCategoryForm({ name: "" })
+                      setShowCategoryModal(true)
+                    }}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  >
+                    Add New Category
+                  </button>
+                </div>
+                {loading ? (
+                  <p className="text-center py-8 text-gray-500">Loading...</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          {["Name", "Actions"].map((h) => (
+                            <th key={h} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              {h}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="bg-white divide-y divide-gray-200">
+                        {categories.map((cat) => (
+                          <tr key={cat._id}>
+                            <td className="px-6 py-4 text-sm font-medium text-gray-900">{cat.name}</td>
+                            <td className="px-6 py-4 text-sm space-x-2">
+                              <button onClick={() => handleEditCategory(cat)} className="text-blue-600 hover:text-blue-900">
+                                Edit
+                              </button>
+                              <button onClick={() => handleDeleteCategory(cat._id)} className="text-red-600 hover:text-red-900">
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -567,6 +675,47 @@ export default function AdminDashboard() {
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   >
                     {loading ? "Saving..." : "Update User"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Category Modal */}
+      {showCategoryModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{editingCategory ? "Edit Category" : "Add New Category"}</h2>
+              <form onSubmit={handleCategorySubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={categoryForm.name}
+                    onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="flex justify-end space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCategoryModal(false)
+                      setEditingCategory(null)
+                    }}
+                    className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    {loading ? "Saving..." : editingCategory ? "Update" : "Add"}
                   </button>
                 </div>
               </form>
