@@ -67,7 +67,19 @@ export default function AdminDashboard() {
   }, [])
 
   useEffect(() => {
-    if (activeTab === "books") fetchBooks()
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      await Promise.all([fetchBooks(), fetchOrders(), fetchUsers(), fetchCategories()])
+    } catch (e) {
+      console.error("Error fetching initial dashboard data:", e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+      if (activeTab === "overview") fetchData()
+    else if (activeTab === "books") fetchBooks()
     else if (activeTab === "orders") fetchOrders()
     else if (activeTab === "users") fetchUsers()
     else if (activeTab === "categories") fetchCategories()
@@ -90,8 +102,9 @@ export default function AdminDashboard() {
       const res = await getCategories()
       setCategories(res.data)
     } catch (e) {
-      console.error("Error fetching categories:", e)
+      console.error(e)
     }
+    setLoading(false)
   }
 
   const fetchOrders = async () => {
