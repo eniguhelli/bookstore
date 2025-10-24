@@ -54,20 +54,30 @@ export default function Orders() {
             <div key={order.id} className="bg-white rounded-lg shadow-md p-6">
               <div className="flex justify-between mb-4">
                 <div>
-                  <p className="text-sm text-gray-600">Order #{order.id}</p>
+                  <p className="text-sm text-gray-600">Order #{order._id}</p>
                   <p className="text-sm text-gray-600">{new Date(order.createdAt).toLocaleDateString()}</p>
                 </div>
                 <div className="text-right">
-                  <p className="font-bold text-lg">${order.totalAmount}</p>
-                  <p className="text-sm text-gray-600">{order.status}</p>
+                  <p className="font-bold text-lg">${order.totalPrice}</p>
+                  <span
+                        className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium ${
+                          order.status === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : order.status === "cancelled"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-blue-100 text-blue-800"
+                        }`}
+                      >
+                        {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                      </span>
                 </div>
               </div>
               <div className="border-t pt-4">
                 {order.items?.map((item, index) => (
                   <div key={index} className="flex justify-between py-2">
-                    <span>{item.book?.title || "Book"}</span>
+                    <span>{item.bookId?.title || "Book"}</span>
                     <span>
-                      Qty: {item.quantity} × ${item.price}
+                      Qty: {item.quantity} × ${item.bookId?.price}
                     </span>
                   </div>
                 ))}

@@ -406,7 +406,7 @@ export default function AdminDashboard() {
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-gray-900">${order.totalAmount}</p>
+                            <p className="font-semibold text-gray-900">${order.totalPrice}</p>
                             <select
                               value={order.status}
                               onChange={(e) => handleUpdateOrderStatus(order._id, e.target.value)}
@@ -424,7 +424,7 @@ export default function AdminDashboard() {
                           <p className="text-sm font-medium text-gray-700 mb-2">Items:</p>
                           {order.items?.map((item, idx) => (
                             <p key={idx} className="text-sm text-gray-600">
-                              {item.book?.title || "Unknown Book"} x {item.quantity} - ${item.price}
+                              {item.bookId?.title || "Unknown Book"} x {item.quantity} - ${item.bookId?.price}
                             </p>
                           ))}
                         </div>

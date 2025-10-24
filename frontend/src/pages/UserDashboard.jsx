@@ -68,10 +68,10 @@ export default function UserDashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold text-gray-900">${order.totalAmount}</p>
+                      <p className="font-bold text-gray-900">${order.totalPrice}</p>
                       <span
                         className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === "delivered"
+                          order.status === "completed"
                             ? "bg-green-100 text-green-800"
                             : order.status === "cancelled"
                               ? "bg-red-100 text-red-800"
@@ -82,14 +82,15 @@ export default function UserDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="border-t pt-3">
-                    <p className="text-sm font-medium text-gray-700 mb-2">Items:</p>
+                  <div className="border-t pt-4">
+                    <p className="text-sm text-black-500 mb-2">Items:</p>
                     {order.items?.map((item, idx) => (
-                      <div key={idx} className="flex justify-between text-sm text-gray-600 mb-1">
+                      <div key={idx} className="flex justify-between text-base text-gray-700 font-semibold mb-1">
                         <span>
-                          {item.book?.title || "Unknown Book"} x {item.quantity}
+                          {item.bookId?.title || "Unknown Book"}
+                          </span>
+                          <span>Quantity: {item.quantity} x ${item.bookId?.price}
                         </span>
-                        <span>${item.price}</span>
                       </div>
                     ))}
                   </div>
