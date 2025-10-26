@@ -10,6 +10,7 @@ import {
   deleteBook,
   getAllOrders,
   updateOrderStatus,
+  deleteOrder,
   getUsers,
   updateUser,
   deleteUser,
@@ -227,6 +228,19 @@ export default function AdminDashboard() {
     setLoading(false)
   }
 
+  const handleDeleteOrder = async (id) => {
+    if (!confirm("Are you sure you want to delete this order?")) return
+    setLoading(true)
+    try {
+      await deleteOrder(id)
+      fetchOrders()
+    } catch (e) {
+      console.error(e)
+      alert("Error deleting order")
+    }
+    setLoading(false)
+  }
+
   if (!user || user.role !== "admin") return null
 
   // Category handlers
@@ -428,6 +442,12 @@ export default function AdminDashboard() {
                             </p>
                           ))}
                         </div>
+                        <button
+                          onClick={() => handleDeleteOrder(order._id)}
+                          className="mt-4 text-red-600 hover:text-red-900 text-sm"  
+                        >
+                          Delete Order
+                        </button>
                       </div>
                     ))}
                   </div>

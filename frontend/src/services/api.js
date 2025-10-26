@@ -40,7 +40,7 @@ export const deleteCategory = (id) => api.delete(`/categories/${id}`)
 // Orders
 export const createOrder = (orderData) => api.post("/orders", orderData)
 export const getOrders = () => api.get("/orders/my")
-
+export const deleteOrder = (id) => api.delete(`/orders/${id}`)
 export const getAllOrders = () => api.get("/orders")
 export const updateOrderStatus = (id, status) => api.put(`/orders/${id}/status`, { status })
 
