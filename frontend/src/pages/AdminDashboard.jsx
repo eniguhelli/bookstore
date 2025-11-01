@@ -420,7 +420,7 @@ export default function AdminDashboard() {
                             </p>
                           </div>
                           <div className="text-right">
-                            <p className="font-semibold text-gray-900">${order.totalPrice}</p>
+                            <p className="font-semibold text-gray-900">${order.totalPrice.toFixed(2)}</p>
                             <select
                               value={order.status}
                               onChange={(e) => handleUpdateOrderStatus(order._id, e.target.value)}

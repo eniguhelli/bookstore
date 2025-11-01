@@ -68,7 +68,7 @@ export default function UserDashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-gray-900">${order.totalPrice}</p>
+                      <p className="font-bold text-gray-900">${order.totalPrice.toFixed(2)}</p>
                       <span
                         className={`inline-block mt-1 px-3 py-1 rounded-full text-xs font-medium ${
                           order.status === "completed"
