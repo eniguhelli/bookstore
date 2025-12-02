@@ -3,7 +3,13 @@ const Order = require('../models/Order');
 // PLACE order (User)
 exports.createOrder = async (req, res) => {
   const { items, totalPrice } = req.body;
+  
   if (!items || items.length === 0) return res.status(400).json({ message: 'No items' });
+
+  const { error } = orderValidationSchema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.details[0].message });
+  }
 
   const order = await Order.create({
     user: req.user.id,
@@ -13,11 +19,6 @@ exports.createOrder = async (req, res) => {
   });
 
   res.status(201).json(order);
-
-  const {error} = orderValidationSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({ message: error.details[0].message });
-  }
 };
 
 // GET all orders (Admin)
