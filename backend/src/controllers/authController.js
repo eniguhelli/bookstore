@@ -24,7 +24,7 @@ exports.register = async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
 
-  res.json({ accessToke, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
+  res.json({ accessToken, user: { id: user._id, name: user.name, email: user.email, role: user.role } });
 };
 
 // Login user
@@ -69,7 +69,7 @@ exports.refresh = (req, res) => {
 
 // Logout
 exports.logout = (req, res) => {
-  res.clearCookie('refreshToken');
+  res.clearCookie('refreshToken', { path: '/api/auth/refresh' });
   res.status(200).json({ message: 'Logged out' });
 };
 
